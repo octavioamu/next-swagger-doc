@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { resolve } from 'path';
+import { join } from 'path';
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
 
 type SwaggerOptions = Options & {
@@ -37,9 +37,9 @@ export function createSwaggerSpec({
   const scanFolders = [apiFolder, ...schemaFolders];
   const apis = scanFolders.flatMap((folder) => {
     // console.log(process.cwd());
-    const buildApiDirectory = resolve('.next/server', folder);
-    const apiDirectory = resolve(folder);
-    const publicDirectory = resolve('public');
+    const buildApiDirectory = join(process.cwd(), '.next/server', folder);
+    const apiDirectory = join(process.cwd(), folder);
+    const publicDirectory = join(process.cwd(), 'public');
     // console.log('buildApiDirectory', buildApiDirectory);
     // console.log('apiDirectory', apiDirectory);
     // console.log('publicDirectory', publicDirectory);
