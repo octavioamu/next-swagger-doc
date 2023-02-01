@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { join } from 'path';
+import { resolve } from 'path';
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
 
 type SwaggerOptions = Options & {
@@ -36,9 +36,13 @@ export function createSwaggerSpec({
 }: SwaggerOptions = defaultOptions) {
   const scanFolders = [apiFolder, ...schemaFolders];
   const apis = scanFolders.flatMap((folder) => {
-    const buildApiDirectory = join(process.cwd(), '.next/server', folder);
-    const apiDirectory = join(process.cwd(), folder);
-    const publicDirectory = join(process.cwd(), 'public');
+    // console.log(process.cwd());
+    const buildApiDirectory = resolve('.next/server', folder);
+    const apiDirectory = resolve(folder);
+    const publicDirectory = resolve('public');
+    // console.log('buildApiDirectory', buildApiDirectory);
+    // console.log('apiDirectory', apiDirectory);
+    // console.log('publicDirectory', publicDirectory);
     const fileTypes = ['ts', 'tsx', 'jsx', 'js', 'json', 'swagger.yaml'];
     return [
       ...fileTypes.map((fileType) => `${apiDirectory}/**/*.${fileType}`),
@@ -52,6 +56,7 @@ export function createSwaggerSpec({
       ),
     ];
   });
+  console.log('apiss', apis);
   const options: Options = {
     apis, // files containing annotations as above
     ...swaggerOptions,
@@ -75,6 +80,8 @@ export function withSwagger({
   schemaFolders = [],
   ...swaggerOptions
 }: SwaggerOptions = defaultOptions) {
+  // console.log(process.cwd());
+
   return () => (_req: NextApiRequest, res: NextApiResponse) => {
     try {
       const swaggerSpec = createSwaggerSpec({
