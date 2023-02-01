@@ -52,7 +52,7 @@ export function createSwaggerSpec({
       ),
       // support load static files from public directory
       ...['swagger.yaml', 'json'].map(
-        (fileType) => `${publicDirectory}/**/*.${fileType}`,
+        (fileType) => `${publicDirectory}/**/**/*.${fileType}`,
       ),
     ];
   });
