@@ -37,9 +37,9 @@ export function createSwaggerSpec({
   const scanFolders = [apiFolder, ...schemaFolders];
   const apis = scanFolders.flatMap((folder) => {
     // console.log(process.cwd());
-    const buildApiDirectory = join(process.cwd(), '.next/server', folder);
+    const buildApiDirectory = join(process.cwd(), '.output/server', folder);
     const apiDirectory = join(process.cwd(), folder);
-    const publicDirectory = join(process.cwd(), 'public');
+    const publicDirectory = join(process.cwd(), '.output/static');
     // console.log('buildApiDirectory', buildApiDirectory);
     // console.log('apiDirectory', apiDirectory);
     // console.log('publicDirectory', publicDirectory);
@@ -62,6 +62,7 @@ export function createSwaggerSpec({
     ...swaggerOptions,
   };
   const spec = swaggerJsdoc(options);
+  console.log('spec', apis);
 
   return spec;
 }
